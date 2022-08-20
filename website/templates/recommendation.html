@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}{{ username }}'s Recommends{% endblock %}
+
+{% block content %}
+
+<h1 align="center">{% block header %}{{username}}'s Recommends{% endblock %}</h1>
+<div id="posts">
+{% for r in rsvp %}
+    {% for post in posts %}
+      {% if post.id == r%}
+        {% if not user.id in post.rsvp|map(attribute="author")|list %}
+        <div class="card border-dark">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <a href="/posts/{{ post.user.username }}">{{ post.user.username }}</a>
+              <div>
+                {{ post.rsvp|length}}
+
+                {% set reserved = false %}
+                {% if user.id in post.rsvp|map(attribute="author")|list %}
+                  {% set reserved = true %}
+                {% endif %}
+
+                {% if reserved %}
+                  {% set icon_class = "fas fa-bookmark" %}
+                {% else %}
+                  {% set icon_class = "far fa-bookmark" %}
+                {% endif %}
+
+                <a href="/rsvp/{{ post.id }}"><i class="{{ icon_class }}"></i></a>
+                {% if user.id == post.author %}
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown"></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="/delete-post/{{ post.id }}" class="dropdown-item">Delete</a></li>
+                  </ul>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card-text">
+                {% for line in post.text.split('\n') %}
+                  {{ line }}
+                    <br />
+                {% endfor %}
+                <!-- {{ post.text }} -->
+              </div>
+            </div>
+            <div class="card-footer text-muted">
+              {{ post.date_created }}
+            </div>
+          </div>
+        <br>
+        {%endif%}
+      {% endif %}
+    {% endfor %}
+{% endfor%}
+</div>
+{% endblock %}
