@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_required, current_user
-from .models import User, Post, RSVP#, Recommend
+from .models import User, Post, RSVP #, Recommend
 from . import db
 
 import numpy as np
@@ -93,7 +93,8 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect, func
 
-engine = create_engine('sqlite:////home/shukor/Desktop/FYP/recommendation/website/database.db')
+#engine = create_engine('sqlite:////home/shukor/Desktop/FYP/recommendation/website/database.db')
+engine = create_engine('sqlite:///website/database.db')
 engine.connect()
 session=Session(engine)
 
